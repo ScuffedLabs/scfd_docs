@@ -2,15 +2,24 @@
 title: Complete Police System
 ---
 import ResourceBtns from "@/components/resource-btns.tsx"
+import { getPageTreePeers } from "fumadocs-core/page-tree";
+import { source } from "@/lib/source";
+
+![Complete Police System](https://dunb17ur4ymx4.cloudfront.net/packages/images/dbdd20f11a11d3a06617375ddedccd7d355e5b32.png)
 
 <ResourceBtns resource="complete-police-system" />
+
 SCFD Police System is a fully modular, performance-optimized law enforcement framework for FiveM, designed to provide immersive policing mechanics while remaining flexible for any server style.
 
-Built from the ground up with scalability and compatibility in mind, the system supports multiple departments, realistic investigation tools, AI-assisted utilities, and configurable policing workflows - all structured to work seamlessly together or independently.
+Built from the ground up with scalability and compatibility in mind, the system supports multiple departments, realistic investigation tools, AI-assisted utilities, and configurable policing workflows - all structured to work seamlessly together or independently. Every feature is designed to integrate cleanly into existing server ecosystems without restriction, allowing servers to keep their preferred systems while upgrading others. Feedback and feature ideas have been contributed by individuals who currently work, or have previously worked, in real-world law enforcement roles, helping shape systems that feel authentic, practical, and immersive for serious RP environments.
 
-Every feature is designed to integrate cleanly into existing server ecosystems without restriction, allowing servers to keep their preferred systems while upgrading others.
-
-Feedback and feature ideas have been contributed by individuals who currently work, or have previously worked, in real-world law enforcement roles, helping shape systems that feel authentic, practical, and immersive for serious RP environments.
+<Cards>
+  {getPageTreePeers(source.getPageTree(), "/docs/paid/garbage-job").map((peer) => (
+    <Card key={peer.url} title={peer.name} href={peer.url}>
+      {peer.description}
+    </Card>
+  ))}
+</Cards>
 
 ## Key Features:
 

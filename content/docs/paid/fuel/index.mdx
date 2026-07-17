@@ -1,3 +1,53 @@
 ---
 title: Advanced Fuel System
 ---
+import { getPageTreePeers } from "fumadocs-core/page-tree";
+import { source } from "@/lib/source";
+import ResourceBtns from "@/components/resource-btns.tsx"
+
+![Advanced Fuel System](https://dunb17ur4ymx4.cloudfront.net/packages/images/99ba386e8433c206dd686686b55889690a73e9ad.png)
+
+<ResourceBtns resource="advanced-fuel-system" />
+
+*Previously known as TAM_Fuel*
+
+SCFD Fuel is the most advanced fuel system developed for FiveM yet. Integrating seamlessly into your server, delivering an immersive fuel management experience for your players. Including, but not limited to, fuel types like Diesel & AVGas, dynamic and realistic fuel consumption, fully custom props, preconfigured EV charger and fuel stations, blips, full localization, custom UI & more! Re-standardizing fuel systems in FiveM and giving your players an experience they'll never forget.
+
+<Cards>
+  {getPageTreePeers(source.getPageTree(), "/docs/paid/fuel").map((peer) => (
+    <Card key={peer.url} title={peer.name} href={peer.url}>
+      {peer.description}
+    </Card>
+  ))}
+</Cards>
+
+---
+
+## Features
+
+- Realistic fuel consumption per vehicle RPM percentage & vehicle class
+- Compatible with QBCore, QBox, ESX, NDCore and standalone (or adapt your own)
+- Multiple fuel types (Gasoline, Diesel, AVGAS/JetFuel & Electric)
+- Configurable pricing and refuel rate per fuel type
+- 3rd-eye interaction system (ox_target)
+- Multiple progress bar styles (circle & bar from ox_lib or your own)
+- Full jerrycan support (buying, refueling vehicles & refilling)
+- Custom nozzle props based on fuel type used
+- Custom EV charger props
+- Fully supported blips
+- AI peds can purchase or refill jerry cans
+- Ability to spawn additional pumps around the map
+- Dozens of preconfigured EV charger locations around San Andreas
+- Ability to fuel from certain vehicles (e.g. fuel trucks)
+- Ability to blacklist classes and individual vehicles
+- Fully unlocked bridge to adapt your own integrations
+- In-game commands to setup charger, pump, and tank locations with an interactive gizmo
+- Full localization system with English & Spanish included
+- Custom vehicle fuel display UI
+- Custom refueling UI
+- Two vehicle fuel display styles (Modern & Classic)
+- Ability to disable exploding pumps
+- In-game settings menu for player customization
+- Custom made sound effects
+- Ability to refuel other players' vehicles
+- Uses modern standards so fuel level is saved per vehicle

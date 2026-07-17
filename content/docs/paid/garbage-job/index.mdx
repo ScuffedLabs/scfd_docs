@@ -2,15 +2,27 @@
 title: Garbage Job
 ---
 import ResourceBtns from "@/components/resource-btns.tsx"
+import { getPageTreePeers } from "fumadocs-core/page-tree";
+import { source } from "@/lib/source";
+
+![Advanced Garbage Job](https://dunb17ur4ymx4.cloudfront.net/packages/images/49bccdd431ddd604dbf513a20c161b0ea2c0fc07.png)
 
 <ResourceBtns resource="advanced-garbage-job" />
-
-# Advanced Garbage Job
 
 SCFD GarbageJob is a fully dynamic and performance-optimized garbage collection job for FiveM, designed for realism, replay-ability, and server economy integration.
 
 Players can clock in, receive dynamically assigned trash zones across Los Santos and Blaine County, collect and unload trash, and earn configurable payouts with optional loot rewards.
 Each truck tracks its own progress, ensuring that every run feels unique and balanced for both solo and multi-player crews.
+
+<Cards>
+  {getPageTreePeers(source.getPageTree(), "/docs/paid/garbage-job").map((peer) => (
+    <Card key={peer.url} title={peer.name} href={peer.url}>
+      {peer.description}
+    </Card>
+  ))}
+</Cards>
+
+---
 
 ## Key Features: 
 
