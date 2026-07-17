@@ -1,0 +1,37 @@
+---
+title: Installation
+---
+
+import { Step, Steps } from 'fumadocs-ui/components/steps';
+
+This will go over the installation guide for TAM_Fuel. Please be sure to read this carefully and if you have any questions, feel free to ask in our Discord.
+
+<Steps>
+    <Step> 
+        ### Install & setup all dependencies
+        - [ox_lib](https://github.com/overextended/ox_lib/releases/latest)
+        - [ox_target](https://github.com/overextended/ox_target/releases/latest) (Highly Recommended)
+        - Make sure your server artifacts version is `9000` or above. artifacts.
+        - Make sure your game build is set to 2802 or higher. See how to set your gamebuild [here](https://forum.cfx.re/t/tutorial-forcing-gamebuilds-on-fivem/4784977).
+        - Make sure your server is running OneSync (Formally Onesync Infinity) and **not** legacy. See how to enable onesync [here](https://forum.cfx.re/t/onesync-infinity-how-to-use-it/996612).
+    </Step>
+    <Step>
+        ### Install optional dependencies
+        (These are entirely optional and are not required for the resource to work.)
+        - [ox_inventory](https://github.com/overextended/ox_inventory/releases/latest) (Highly Recommended) 
+    </Step>
+    <Step>
+        ### Download the latest release
+        Download the latest release from [CFX Portal](https://portal.cfx.re)
+    </Step>
+    <Step>
+        ### Add the resources to your server.cfg (or resources.cfg)
+        ```bash
+            start ox_lib
+            start framework # the name of your framework (i.e. ND_Core, es_extended, qbx_core). This is not necessary if you are using standalone.
+            start ox_target # or qb-target. Though we prefer you use ox_target
+            start ox_inventory # Optional, you do not need this.
+            start TAM_Fuel
+        ```
+    </Step>
+</Steps>
