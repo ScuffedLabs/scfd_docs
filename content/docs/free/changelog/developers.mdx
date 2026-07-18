@@ -1,0 +1,468 @@
+---
+title: Developers
+description: Learn how to integrate SCFD Changelog into your own resources.
+---
+
+SCFD Changelog is designed to be lightweight, standalone, and easy to integrate into your own resources. It exposes a small collection of client and server exports that allow other resources to open the changelog, retrieve release information, and react to new updates.
+
+The resource is entirely server-authoritative. Changelog parsing, validation, and webhook publishing all occur on the server before sanitized data is sent to clients.
+
+---
+
+# Resource Architecture
+
+The resource is split into several components.
+
+```text
+client/
+    Handles NUI communication and exports.
+
+server/
+    Parses CHANGELOG.md, validates releases and handles webhook publishing.
+
+shared/
+    Shared constants, logging and utilities.
+
+web/
+    React + Tailwind + shadcn/ui NUI.
+
+data/
+    Configuration.
+
+locales/
+    ox_lib localization.
+```
+
+---
+
+# Client Exports
+
+Client exports allow your resources to interact with the changelog UI.
+
+---
+
+## showChangelog
+
+Opens the newest available changelog.
+
+```lua
+exports.scfd_changelog:showChangelog()
+```
+
+### Example
+
+```lua
+RegisterCommand("updates", function()
+    exports.scfd_changelog:showChangelog()
+end)
+```
+
+---
+
+## showRelease
+
+Opens a specific release.
+
+```lua
+exports.scfd_changelog:showRelease("3.0.0")
+```
+
+Returns `true` if the release exists.
+
+### Example
+
+```lua
+local success = exports.scfd_changelog:showRelease("2.5.0")
+
+if not success then
+    print("Release not found.")
+end
+```
+
+---
+
+## hasUnreadChangelog
+
+Returns whether the player has viewed the newest version.
+
+```lua
+local unread = exports.scfd_changelog:hasUnreadChangelog()
+```
+
+Returns:
+
+```lua
+boolean
+```
+
+Example:
+
+```lua
+if exports.scfd_changelog:hasUnreadChangelog() then
+    print("Player has unread updates.")
+end
+```
+
+---
+
+## isOpen
+
+Returns whether the changelog UI is currently visible.
+
+```lua
+local open = exports.scfd_changelog:isOpen()
+```
+
+Returns:
+
+```lua
+boolean
+```
+
+---
+
+## setEnabled
+
+Temporarily enables or disables automatic opening.
+
+```lua
+exports.scfd_changelog:setEnabled(false)
+```
+
+Useful when another resource is displaying onboarding screens or character selection.
+
+Example:
+
+```lua
+exports.scfd_changelog:setEnabled(false)
+
+-- Character creator...
+
+exports.scfd_changelog:setEnabled(true)
+```
+
+---
+
+# Server Exports
+
+Server exports provide access to parsed changelog data.
+
+---
+
+## getChangelog
+
+Returns every parsed release.
+
+```lua
+local releases = exports.scfd_changelog:getChangelog()
+```
+
+Returns:
+
+```lua
+table
+```
+
+---
+
+## getRelease
+
+Returns a specific release.
+
+```lua
+local release = exports.scfd_changelog:getRelease("3.0.0")
+```
+
+Returns:
+
+```lua
+table | nil
+```
+
+Example:
+
+```lua
+local release = exports.scfd_changelog:getRelease("3.0.0")
+
+if release then
+    print(release.title)
+end
+```
+
+---
+
+## getReleaseMetadata
+
+Returns only a release's metadata.
+
+```lua
+local metadata = exports.scfd_changelog:getReleaseMetadata("3.0.0")
+```
+
+Useful if you only need:
+
+- title
+- summary
+- author
+- important flag
+
+without loading the entire release.
+
+---
+
+## getCategories
+
+Returns every discovered category.
+
+```lua
+local categories = exports.scfd_changelog:getCategories()
+```
+
+Example output:
+
+```lua
+{
+    "General",
+    "Police",
+    "EMS",
+    "Economy",
+    "UI"
+}
+```
+
+---
+
+## reloadChangelog
+
+Reloads and reparses `CHANGELOG.md`.
+
+```lua
+exports.scfd_changelog:reloadChangelog()
+```
+
+Useful during development.
+
+<Callout type="warning">
+Reloading does not automatically reopen the changelog for connected players.
+</Callout>
+
+---
+
+# Release Object
+
+Each parsed release has the following structure.
+
+```lua
+{
+    version = "3.0.0",
+
+    date = "July 18, 2026",
+
+    metadata = {
+        title = "Summer Update",
+        summary = "...",
+        author = "Scuffed Labs",
+        important = true,
+    },
+
+    sections = {
+        {
+            name = "Added",
+
+            entries = {
+                {
+                    category = "Police",
+                    text = "Added evidence lockers."
+                }
+            }
+        }
+    }
+}
+```
+
+---
+
+# Metadata Object
+
+Metadata contains information displayed at the top of the changelog.
+
+```lua
+metadata = {
+    title = "...",
+    summary = "...",
+    author = "...",
+    important = true
+}
+```
+
+All fields are optional.
+
+---
+
+# Section Object
+
+Every release contains one or more sections.
+
+```lua
+{
+    name = "Fixed",
+
+    entries = {
+        ...
+    }
+}
+```
+
+Supported section names are:
+
+- Added
+- Changed
+- Fixed
+- Removed
+- Deprecated
+- Security
+
+---
+
+# Entry Object
+
+Each individual changelog entry contains:
+
+```lua
+{
+    category = "Police",
+    text = "Added new armory locations."
+}
+```
+
+If no category is specified in the Markdown file:
+
+```lua
+category = "General"
+```
+
+is assigned automatically.
+
+---
+
+# Version Detection
+
+The current release version is automatically read from your resource metadata.
+
+Example:
+
+```lua
+version "3.0.0"
+```
+
+Changing the resource version automatically causes the newest release to become unread for every player.
+
+No manual configuration is required.
+
+---
+
+# Player View History
+
+Player history is stored using FiveM KVP storage.
+
+The resource tracks:
+
+- Latest viewed version
+- Automatic display status
+
+This allows:
+
+- once-per-version display
+- reopening previous releases
+- seamless updates
+
+---
+
+# Webhook Publishing
+
+Webhook publishing is handled entirely on the server.
+
+The client never receives:
+
+- webhook URLs
+- publish commands
+- webhook configuration
+
+Only sanitized release information is sent to Discord.
+
+---
+
+# Security
+
+SCFD Changelog validates every release before it reaches the client.
+
+Validation includes:
+
+- Metadata parsing
+- Section validation
+- Entry validation
+- Character sanitization
+- HTML stripping
+- Invalid release detection
+
+Malformed releases are ignored instead of being displayed.
+
+---
+
+# React Integration
+
+The NUI communicates using standard FiveM NUI callbacks.
+
+Developers rebuilding the interface should use the provided helper utilities.
+
+Recommended helpers include:
+
+- `fetchNui()`
+- `useNuiEvent()`
+- `isEnvBrowser()`
+
+These simplify local development and improve compatibility with browser mode.
+
+---
+
+# Browser Development
+
+The React application supports running outside FiveM for development.
+
+When running in browser mode:
+
+- Mock data is automatically loaded.
+- NUI events are simulated.
+- Live React development is supported.
+
+This allows rapid UI iteration without restarting your server.
+
+---
+
+# Best Practices
+
+<Cards cols={2}>
+<Card title="Use Exports">
+Prefer using exports instead of directly triggering internal events.
+</Card>
+
+<Card title="Avoid Editing Parsed Data">
+Treat release data as read-only after it has been parsed.
+</Card>
+
+<Card title="Keep Releases Small">
+Large changelogs are automatically paginated, but concise releases provide a better user experience.
+</Card>
+
+<Card title="Reload During Development">
+Use <code>reloadChangelog()</code> instead of restarting the resource while editing release notes.
+</Card>
+</Cards>
+
+---
+
+# API Stability
+
+All documented exports are considered part of the public API and are intended to remain stable across future releases.
+
+Internal events, functions, and implementation details should be considered private and may change without notice.
