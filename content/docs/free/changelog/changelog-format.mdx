@@ -1,0 +1,457 @@
+---
+title: Changelog Format
+description: Learn how to write changelogs, release notes, and metadata for SCFD Changelog.
+---
+
+SCFD Changelog uses a simple Markdown-based format that is easy to write while providing rich information inside the in-game UI.
+
+Each release consists of:
+
+1. A version header
+2. Optional metadata
+3. One or more sections
+4. Individual entries
+
+The parser automatically converts your Markdown into the interactive changelog shown in-game.
+
+---
+
+# Release Structure
+
+Every release begins with a version header.
+
+```md
+## [3.0.0] - July 18, 2026
+```
+
+This tells the parser where a new release begins.
+
+The format is:
+
+```md
+## [VERSION] - DATE
+```
+
+For example:
+
+```md
+## [1.0.0] - January 5, 2026
+## [1.1.0] - February 12, 2026
+## [2.0.0] - June 1, 2026
+```
+
+<Callout type="info">
+Releases should always be ordered newest first.
+</Callout>
+
+---
+
+# Release Metadata
+
+Immediately below the version header you can optionally define release metadata.
+
+```md
+<!-- meta
+title: Summer Update
+summary: A massive update focused on emergency services, performance and quality of life improvements.
+author: Scuffed Labs
+important: true
+categories: Police, EMS, UI
+-->
+```
+
+Metadata controls how the release appears in the UI.
+
+---
+
+# Metadata Fields
+
+### title
+
+A human-friendly release name.
+
+```md
+title: Summer Update
+```
+
+Instead of displaying only **3.0.0**, the UI will display:
+
+> Summer Update
+
+---
+
+### summary
+
+A short overview of the release.
+
+```md
+summary: Major improvements to emergency services and performance.
+```
+
+Summaries should usually be between one and three sentences.
+
+---
+
+### author
+
+The author of the release.
+
+```md
+author: Scuffed Labs
+```
+
+Useful if multiple developers maintain your server.
+
+---
+
+### important
+
+Highlights the release inside the UI.
+
+```md
+important: true
+```
+
+Important releases are visually emphasized and should be reserved for:
+
+- Major updates
+- Breaking changes
+- Seasonal events
+- Server wipes
+
+---
+
+### categories
+
+A comma-separated list of categories featured in the update.
+
+```md
+categories: Police, EMS, UI
+```
+
+This helps players quickly understand what areas of the server were updated.
+
+<Callout type="info">
+This field is optional. Categories are also detected automatically from changelog entries.
+</Callout>
+
+---
+
+# Sections
+
+Each release is divided into sections.
+
+Supported section names are:
+
+```md
+### Added
+### Changed
+### Fixed
+### Removed
+### Deprecated
+### Security
+```
+
+Each section groups related changes together.
+
+Example:
+
+```md
+### Added
+
+- Added new vehicles.
+- Added dispatch improvements.
+
+### Fixed
+
+- Fixed MDT crashes.
+- Fixed garage duplication.
+```
+
+---
+
+### Added
+
+Use **Added** for new features.
+
+Examples:
+
+```md
+### Added
+
+- Added a new vehicle dealership.
+- Added custom police liveries.
+- Added evidence lockers.
+```
+
+---
+
+### Changed
+
+Use **Changed** for existing features that have been modified.
+
+```md
+### Changed
+
+- Rebalanced vehicle prices.
+- Updated weapon recoil.
+- Increased paycheck rewards.
+```
+
+---
+
+### Fixed
+
+Use **Fixed** for bug fixes.
+
+```md
+### Fixed
+
+- Fixed duplicate inventory items.
+- Fixed broken dispatch notifications.
+- Fixed invisible vehicles.
+```
+
+---
+
+### Removed
+
+Use **Removed** when features are intentionally deleted.
+
+```md
+### Removed
+
+- Removed old loading screen.
+- Removed deprecated commands.
+```
+
+---
+
+### Deprecated
+
+Use **Deprecated** when features still exist but will be removed later.
+
+```md
+### Deprecated
+
+- Legacy MDT support.
+```
+
+---
+
+### Security
+
+Use **Security** for security improvements.
+
+```md
+### Security
+
+- Improved server-side validation.
+- Fixed permission bypass.
+```
+
+---
+
+# Categories
+
+Each individual entry may optionally belong to a category.
+
+Categories make filtering possible inside the UI.
+
+Example:
+
+```md
+- [Police] Added evidence lockers.
+```
+
+The parser automatically assigns this entry to the **Police** category.
+
+---
+
+## Category Syntax
+
+Categories are always written inside square brackets.
+
+Correct:
+
+```md
+- [Police] Added spike strips.
+```
+
+```md
+- [Economy] Increased taxi payouts.
+```
+
+```md
+- [UI] Updated the inventory.
+```
+
+Incorrect:
+
+```md
+- Police: Added spike strips.
+```
+
+```md
+- (Police) Added spike strips.
+```
+
+```md
+Police
+- Added spike strips.
+```
+
+---
+
+# General Entries
+
+If an entry does not include a category, it is automatically assigned to:
+
+```text
+General
+```
+
+Example:
+
+```md
+- Improved server performance.
+```
+
+becomes
+
+```
+General
+```
+
+inside the UI.
+
+---
+
+# Multiple Categories
+
+Each entry may only belong to a single category.
+
+Instead of writing:
+
+```md
+- [Police, EMS] Added radio improvements.
+```
+
+Split it into multiple entries.
+
+```md
+- [Police] Added radio improvements.
+- [EMS] Added radio improvements.
+```
+
+---
+
+# Images
+
+Images are not currently supported inside changelog entries.
+
+Instead, describe the feature using text.
+
+---
+
+# Markdown
+
+SCFD Changelog supports plain text only.
+
+Markdown formatting such as:
+
+```md
+**bold**
+*italic*
+# headings
+```
+
+is ignored inside changelog entries.
+
+Keeping entries simple results in a cleaner UI.
+
+---
+
+# Best Practices
+
+A good changelog should answer three questions:
+
+- What changed?
+- Why did it change?
+- Who does it affect?
+
+Avoid writing vague entries like:
+
+```md
+- Fixed stuff.
+```
+
+Instead write:
+
+```md
+- [Police] Fixed officers occasionally losing duty status after reconnecting.
+```
+
+---
+
+# Complete Example
+
+```md
+## [3.0.0] - July 18, 2026
+
+<!-- meta
+title: Summer Update
+summary: A major update introducing new emergency service features, performance improvements and dozens of quality-of-life fixes.
+author: Scuffed Labs
+important: true
+categories: Police, EMS, UI, Economy
+-->
+
+### Added
+
+- [Police] Added evidence lockers.
+- [Police] Added department armories.
+- [EMS] Added stretcher interactions.
+- [UI] Added a redesigned dispatch interface.
+
+### Changed
+
+- [Economy] Increased taxi payouts.
+- [UI] Updated the inventory layout.
+
+### Fixed
+
+- [Police] Fixed officers losing duty after reconnecting.
+- [Economy] Fixed duplicate paychecks.
+- [General] Improved overall server performance.
+
+### Security
+
+- Improved permission validation.
+- Fixed several server-side exploits.
+```
+
+---
+
+# Parser Rules
+
+The parser expects the following:
+
+- Releases must start with ## [Version]
+- Metadata must immediately follow the version header
+- Metadata comments must be properly closed
+- Section headers must use ###
+- Entries must begin with -
+- Categories must be enclosed in square brackets
+
+Malformed releases are ignored to prevent invalid data from being displayed in-game.
+
+---
+
+# Tips
+<Cards cols={2}>
+    <Card title="Keep Releases Focused"> Avoid listing hundreds of tiny changes. Group related improvements together. </Card>
+    <Card title="Use Categories"> Categories allow players to quickly find updates relevant to them. </Card>
+    <Card title="Write Meaningful Summaries"> A good summary helps players understand the purpose of the update before reading every change. </Card>
+    <Card title="Highlight Major Releases"> Reserve <code>important: true</code> for your biggest updates so they stand out. </Card>
+</Cards>
