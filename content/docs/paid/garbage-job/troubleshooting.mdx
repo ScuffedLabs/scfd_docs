@@ -1,0 +1,107 @@
+---
+title: Troubleshooting
+---
+
+Before opening a support ticket, check the common issues below. Most installation and startup problems can be resolved by following these steps.
+
+---
+
+## ox_lib related issues
+
+### `ox_lib is missing, please ensure you have the latest version installed!`
+
+The resource could not find ox_lib because it is not installed or is not starting before the resource.
+
+#### Solution
+1. Download the latest version of ox_lib from the [GitHub releases page](https://github.com/overextended/ox_lib/releases/latest).
+2. Install the latest version of ox_lib by following the [installation guide](https://overextended.dev/docs/ox_lib#installation).
+3. Ensure that ox_lib is started before any other resources that depend on it.
+```bash
+ensure ox_lib
+ensure scfd_garbagejob
+```
+
+### `ox_lib is outdated! Please ensure you upgrade to the latest version!`
+
+Your installed version of `ox_lib` is older than the minimum version required.
+
+#### Solution
+Download and install the [latest release](https://github.com/overextended/ox_lib/releases/latest), being sure to entirely delete and re-install the resource.
+
+## Resource Startup Issues
+
+### Resource name mismatch!
+
+You have renamed the resource, please revert the name back to the original. For example it'll be `scfd_garbagejob` not `scfd-garbagejob`, and ensure the casing matches and there isn't a `-main` or `-master` suffix.
+
+### Resource metadata check failed!
+The `author` or `version` entries inside `fxmanifest.lua` have been modified.
+
+
+#### Solution
+Restore the original `fxmanifest.lua` from your download or reinstall the resource through the [CFX Portal](https://portal.cfx.re).
+
+### Resource file validation failed!
+
+Required files have been modified, deleted, or corrupted.
+
+
+#### Solution
+Please reinstall the resource from the [CFX Portal](https://portal.cfx.re) or from [Github](https://github.com/scuffedlabs/).
+
+### Configuration failed to load!
+
+The `data/configuration.lua` contains a syntax error or invalid configuration.
+
+#### Solution
+- Check for missing commas.
+- Check for missing brackets.
+- Restore the original configuration if necessary.
+- Compare your configuration against the default version.
+
+
+### Failed to load x integration
+
+The selected integration is missing or incorrectly configured. This usually means invalid integration name in the config, missing bridge files or missing dependencies.
+
+#### Solution
+
+- Verify the integration name in `data/configuration.lua`
+- Ensure the required bridge files exist
+- Reinstall the resource if files are missing
+
+### Failed startup checks
+```bash
+Failed to start resource!
+Please fix failed startup checks.
+```
+
+One or more startup validation checks failed.
+
+#### Solution
+Look further up in your server console for the specific error that caused startup to fail, then resolve that issue first.
+
+## Features not working
+
+### A feature is not working
+
+Possible causes:
+
+- The feature is disabled in the configuration.
+- Your framework doesn't support it.
+- Your inventory system isn't supported.
+- A required dependency is missing.
+- Another resource is conflicting with it.
+
+Things to check:
+
+- Is the feature enabled?
+- Are all dependencies installed?
+- Are you using a supported framework?
+- Are you running the latest version?
+- Are there any console errors?
+
+
+## Still need help?
+
+If you've completed all of the above and are still experiencing issues, [contact us](/docs/faqs#support) with all requested information. Missing logs, versions, or reproduction steps may delay troubleshooting, as we need enough information to reproduce the problem before we can investigate further.

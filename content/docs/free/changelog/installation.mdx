@@ -1,0 +1,184 @@
+---
+title: Installation
+description: Learn how to install and configure SCFD Changelog.
+---
+
+SCFD Changelog is designed to be lightweight and framework agnostic. Installation only takes a few minutes and requires minimal configuration before it's ready to use.
+
+## Requirements
+
+Before installing, make sure your server meets the following requirements:
+
+- Latest recommended FiveM server artifacts
+- `ox_lib` **3.30.0** or newer
+- A modern browser-supported NUI (included with current FiveM builds)
+
+<Callout type="info">
+SCFD Changelog does not require a framework such as ESX, Qbox, QB-Core or ND. It works completely standalone.
+</Callout>
+
+---
+
+## Step 1 - Download
+
+Download the latest release from either:
+
+- GitHub Releases
+- CFX Portal
+
+Extract the resource into your server's `resources` directory.
+
+Your folder structure should look similar to:
+
+```text
+resources/
+└── scfd_changelog/
+    ├── client/
+    ├── server/
+    ├── shared/
+    ├── web/
+    ├── data/
+    ├── locales/
+    ├── CHANGELOG.md
+    ├── fxmanifest.lua
+    └── README.md
+```
+
+<Callout type="warning">
+The resource folder must remain named <code>scfd_changelog</code>. Renaming the folder is not supported.
+</Callout>
+
+---
+
+## Step 2 - Add to server.cfg
+
+Ensure the resource after **ox_lib**.
+
+```bash
+ensure ox_lib
+ensure scfd_changelog
+```
+
+If your server uses multiple resource configuration files, ensure SCFD Changelog is started before any resources that intend to use its exports.
+
+---
+
+## Step 3 - Configure
+
+Open:
+
+```text
+data/configuration.lua
+```
+
+Configure the options that best suit your server.
+
+Common options include:
+
+- Automatic opening on player join
+- Delay before opening
+- Once-per-version display
+- Default theme
+- Discord webhook support
+
+See the **Configuration** page for a complete explanation of every option.
+
+---
+
+## Step 4 - Customize your changelog
+
+All release information is read from:
+
+```text
+CHANGELOG.md
+```
+
+The file supports:
+
+- Multiple releases
+- Categories
+- Rich metadata
+- Version history
+- Automatic parsing
+
+Example:
+
+```md
+## [3.0.0] - July 18, 2026
+<!-- meta
+title: Summer Update
+summary: Major improvements across multiple gameplay systems.
+author: Scuffed Labs
+important: true
+categories: Police, UI, Economy
+-->
+
+### Added
+
+- [Police] Added dispatch improvements.
+- [UI] Added a redesigned phone.
+
+### Fixed
+
+- [Economy] Fixed duplicate paychecks.
+```
+
+See Changelog Format for the complete syntax.
+---
+
+## Step 5 - (Optional) Configure Discord Publishing
+
+SCFD Changelog can automatically publish releases to Discord.
+
+Enable the webhook in the configuration file:
+```lua
+config.webhook.enabled = true
+```
+
+Then add your webhook URL to server.cfg:
+```bash
+set scfd_changelog:webhook "https://discord.com/api/webhooks/..."
+```
+
+Publishing can then be triggered using `/publishchangelog`
+
+<Callout type="info"> 
+    Webhook publishing is performed entirely server-side. Webhook URLs are never sent to clients. 
+</Callout>
+---
+
+## Verifying Installation
+Once the resource has started successfully:
+- No errors should appear in the server console.
+- Players joining the server should automatically receive the newest changelog (if enabled).
+- Running the `/changelog` command below should open the changelog manually:
+
+If the UI opens correctly, installation is complete.
+---
+
+## Updating
+
+Updating SCFD Changelog is simple.
+
+1. Stop the resource.
+2. Backup your current configuration.
+3. Delete and reinstall the latest version from the CFX portal or github.
+4. Merge any configuration changes if required.
+5. Update your CHANGELOG.md.
+6. Restart the resource.
+
+Player view history is preserved automatically, meaning users will only be shown releases they haven't already viewed.
+---
+
+## Next Steps
+
+Now that the resource is installed, continue with:
+
+<Cards>
+    <Card title="Configuration" href="./configuration" >
+        Learn how to configure every option available.
+    </Card>
+    <Card title="Changelog Format" href="./changelog-format" >
+        Learn how to write rich changelog entries and release metadata.
+    </Card>
+</Cards>

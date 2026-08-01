@@ -1,0 +1,327 @@
+---
+title: Configuration
+description: Learn how to configure SCFD Changelog to match your server.
+---
+
+All resource configuration is located in `data/configuration.lua`.
+
+SCFD Changelog is designed to be almost entirely data-driven. Most servers will only need to configure the display options and (optionally) Discord webhook support.
+
+---
+
+# Configuration Structure
+
+The configuration file is split into several sections:
+
+- Display
+- Themes
+- Discord Webhook
+- Debugging
+
+Each section is explained below.
+
+---
+
+## display
+
+The `display` table controls how and when players see the changelog.
+
+```lua
+config.display = {
+    title = "Server Changelog",
+    subtitle = "Updates, fixes, and improvements",
+
+    onJoin = true,
+    joinDelay = 1500,
+
+    oncePerVersion = true,
+
+    defaultCategory = "All",
+
+    theme = "scuffed",
+}
+```
+
+### title
+
+The title displayed at the top of the changelog.
+
+```lua
+title = "Server Changelog"
+```
+
+---
+
+### subtitle
+
+Optional text displayed below the title.
+
+```lua
+subtitle = "Updates, fixes, and improvements"
+```
+
+---
+
+### onJoin
+
+Whether the newest changelog should automatically open when a player joins.
+
+```lua
+onJoin = true
+```
+
+If disabled, players can still manually open the changelog using:
+
+```text
+/changelog
+```
+
+---
+
+### joinDelay
+
+The amount of time (in milliseconds) to wait after the player has loaded before opening the changelog.
+
+```lua
+joinDelay = 1500
+```
+
+Increasing this delay can help avoid conflicts with other resources that open menus when players spawn.
+
+---
+
+### oncePerVersion
+
+Controls whether each changelog is only displayed once.
+
+```lua
+oncePerVersion = true
+```
+
+When enabled:
+
+- Version **3.0.0** is shown once.
+- Updating to **3.1.0** automatically shows the new changelog.
+- Players can always reopen previous releases manually.
+
+When disabled:
+
+The changelog will open every time a player joins.
+
+<Callout type="info">
+Player view history is stored locally using FiveM KVP storage.
+</Callout>
+
+---
+
+### defaultCategory
+
+The category selected when the UI first opens.
+
+```lua
+defaultCategory = "All"
+```
+
+This can be any category declared in your changelog.
+
+Examples:
+
+```lua
+defaultCategory = "Police"
+```
+
+```lua
+defaultCategory = "Economy"
+```
+
+If the category does not exist for the selected release, the UI automatically falls back to **All**.
+
+---
+
+### theme
+
+Controls the appearance of the NUI.
+
+```lua
+theme = "scuffed"
+```
+
+Supported themes include:
+
+| Theme | Description |
+| ------- | ----------- |
+| `scuffed` | Official Scuffed Labs theme |
+| `neutral` | Default dark shadcn theme |
+| `blue` | Blue accent |
+| `green` | Green accent |
+| `orange` | Orange accent |
+| `rose` | Rose accent |
+| `violet` | Violet accent |
+
+Changing the theme requires restarting the resource.
+
+---
+
+## Discord Webhook
+
+SCFD Changelog can optionally publish release notes directly to Discord.
+
+```lua
+config.webhook = {
+    enabled = false,
+}
+```
+
+---
+
+### enabled
+
+Enables Discord webhook publishing.
+
+```lua
+enabled = true
+```
+
+When disabled:
+
+- No webhook requests are sent.
+- The `publishchangelog` command still reloads the changelog locally.
+
+---
+
+### Webhook URL
+
+For security reasons, the webhook URL is **not** stored inside the configuration file.
+
+Instead, add it to your `server.cfg`.
+
+```bash
+set scfd_changelog:webhook "https://discord.com/api/webhooks/..."
+```
+
+<Callout type="warning">
+Never hardcode webhook URLs inside the resource.
+</Callout>
+
+---
+
+# Themes
+
+Every built-in theme uses the same component layout.
+
+Only the color palette changes.
+
+Current themes:
+
+<Cards cols={2}>
+<Card title="Scuffed">
+Official Scuffed Labs branding.
+</Card>
+
+<Card title="Neutral">
+Standard shadcn dark theme.
+</Card>
+
+<Card title="Blue">
+Blue accent palette.
+</Card>
+
+<Card title="Green">
+Green accent palette.
+</Card>
+
+<Card title="Orange">
+Orange accent palette.
+</Card>
+
+<Card title="Rose">
+Pink / rose accent palette.
+</Card>
+
+<Card title="Violet">
+Purple accent palette.
+</Card>
+</Cards>
+
+Themes can also be extended if you're rebuilding the NUI yourself.
+
+---
+
+# Automatic Opening
+
+Automatic opening only occurs when all of the following are true:
+
+- `display.onJoin` is enabled
+- The player has not already viewed the current version (when `oncePerVersion` is enabled)
+- The resource has finished initializing
+- The NUI is not already open
+
+This prevents duplicate changelog windows during login.
+
+---
+
+# Localization
+
+SCFD Changelog uses **ox_lib** localization.
+
+Translations are stored in:
+
+```text
+locales/
+```
+
+The default language is:
+
+```text
+locales/en.json
+```
+
+Additional languages can be added by creating new locale files.
+
+---
+
+# Debugging
+
+When debugging is enabled, the resource provides additional logging for:
+
+- Changelog parsing
+- Version detection
+- Metadata parsing
+- Discord publishing
+- NUI communication
+
+This can be useful while creating new changelog entries.
+
+---
+
+# Example Configuration
+
+```lua
+config.display = {
+    title = "Server Changelog",
+    subtitle = "Latest Updates",
+
+    onJoin = true,
+    joinDelay = 2000,
+
+    oncePerVersion = true,
+
+    defaultCategory = "All",
+
+    theme = "blue",
+}
+
+config.webhook = {
+    enabled = true,
+}
+```
+
+---
+
+# Next Steps
+
+Now that the resource has been configured, learn how to write release notes.
+
+<Card title="Changelog Format" href="./changelog-format" >
+Learn how to write releases, metadata, categories, and version history.
+</Card>
